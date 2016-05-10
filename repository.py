@@ -1,8 +1,15 @@
 import pickle
+import yaml
 import os
 
 class Repository:
-	storage_path = "./contacts.data"
+	with open('./config/database.yml', 'r') as stream:
+		try:
+			config = yaml.load(stream)
+			storage_path = config['storage_path']
+			os.makedirs(os.path.dirname(storage_path), exist_ok=True)
+		except yaml.YAMLError as exc:
+			print(exc)
 
 	@staticmethod
 	def is_storage_empty():
